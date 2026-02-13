@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> VALERIEEEEE 💖</title>
+
+<style>
+body {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(-45deg, #ff9a9e, #ffb6c1, #ffc0cb, #ff85a2);
+    background-size: 400% 400%;
+    animation: gradient 10s ease infinite;
+    margin: 0;
+    padding: 20px;
+    overflow: hidden;
+    transition: transform 0.8s ease;
+}
+
+@keyframes gradient {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+h1 {
+    font-size: 26px;
+    margin-bottom: 40px;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    margin: 10px;
+    transition: 0.3s;
+}
+
+#yesBtn {
+    background-color: #ff4d6d;
+    color: white;
+}
+
+#noBtn {
+    background-color: #333;
+    color: white;
+    position: relative;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+@media (max-width: 600px) {
+    button {
+        width: 80%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<h1 id="mainText"> Valerie will you be my VAL..entine you get it bc val valentine</h1>
+
+<button id="yesBtn" onclick="sayYes()">YES</button>
+<button id="noBtn" onclick="growYes()" ontouchstart="growYes()">nah</button>
+
+<canvas id="hearts"></canvas>
+
+<script>
+let yesSize = 18;
+let noSize = 18;
+let clickCount = 0;
+
+function growYes() {
+    clickCount++;
+
+    // Mobile vibration
+    if (navigator.vibrate) {
+        navigator.vibrate(100);
+    }
+
+    // YES grows
+    yesSize += 14;
+    document.getElementById("yesBtn").style.fontSize = yesSize + "px";
+
+    // NO shrinks
+    noSize -= 3;
+    if (noSize > 8) {
+        document.getElementById("noBtn").style.fontSize = noSize + "px";
+    }
+
+    // NO runs away after 2 clicks
+    if (clickCount >= 2) {
+        let x = Math.random() * (window.innerWidth - 100);
+        let y = Math.random() * (window.innerHeight - 100);
+        let noBtn = document.getElementById("noBtn");
+        noBtn.style.position = "absolute";
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
+    }
+
+    // NO disappears after 5 clicks
+    if (clickCount >= 5) {
+        document.getElementById("noBtn").style.display = "none";
+    }
+}
+
+function sayYes() {
+    // Change H1 text to GIT ONNNN
+    const mainText = document.getElementById("mainText");
+    mainText.innerHTML = "YAYAYAYA I LOVE YOUUUUU";
+    mainText.style.fontSize = "50px";
+    mainText.style.marginTop = "20vh";
+    mainText.style.textAlign = "center";
+
+    // Hide buttons
+    document.getElementById("yesBtn").style.display = "none";
+    document.getElementById("noBtn").style.display = "none";
+
+    // Start heart animation
+    startHearts();
+}
+
+/* HEART RAIN */
+const canvas = document.getElementById("hearts");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let hearts = [];
+
+function startHearts() {
+    for (let i = 0; i < 150; i++) {
+        hearts.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 20 + 10,
+            speed: Math.random() * 3 + 1
+        });
+    }
+    animateHearts();
+}
+
+function drawHeart(x, y, size) {
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.bezierCurveTo(x, y - size/2, x - size, y - size/2, x - size, y);
+    ctx.bezierCurveTo(x - size, y + size/2, x, y + size, x, y + size);
+    ctx.bezierCurveTo(x, y + size, x + size, y + size/2, x + size, y);
+    ctx.bezierCurveTo(x + size, y - size/2, x, y - size/2, x, y);
+    ctx.fillStyle = "#ff4d6d";
+    ctx.fill();
+}
+
+function animateHearts() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < hearts.length; i++) {
+        let h = hearts[i];
+        drawHeart(h.x, h.y, h.size/2);
+        h.y += h.speed;
+
+        if (h.y > canvas.height) {
+            h.y = 0;
+        }
+    }
+    requestAnimationFrame(animateHearts);
+}
+</script>
+
+</body>
+</html>
